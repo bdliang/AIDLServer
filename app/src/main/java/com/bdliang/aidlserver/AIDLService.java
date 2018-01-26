@@ -76,6 +76,7 @@ public class AIDLService extends Service {
                 e.printStackTrace();
             }
         }
+        callbackList.finishBroadcast();
     }
 
     @Override
