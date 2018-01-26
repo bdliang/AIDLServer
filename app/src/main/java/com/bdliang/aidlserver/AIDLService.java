@@ -3,6 +3,7 @@ package com.bdliang.aidlserver;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AIDLService extends Service {
+    private RemoteCallbackList<ICallback> callbackList = new RemoteCallbackList<>();
     /**
      *
      */
@@ -32,6 +34,7 @@ public class AIDLService extends Service {
         public void addStudent(Student student) throws RemoteException {
             Log.d(TAG, "addStudent: " + student.toString());
             studentList.add(student);
+
         }
 
         @Override
@@ -39,12 +42,41 @@ public class AIDLService extends Service {
             Log.d(TAG, "getStudent: " + name);
             for (Student student : studentList) {
                 if (student.getName().equals(name)) {
+                    callBack();
                     return student;
                 }
             }
             return null;
         }
+
+        @Override
+        public void registerCallback(ICallback cb) throws RemoteException {
+
+            if (cb != null) {
+                callbackList.register(cb);
+            }
+        }
+
+        @Override
+        public void unregisterCallback(ICallback cb) throws RemoteException {
+
+            if (cb != null) {
+                callbackList.unregister(cb);
+            }
+        }
     };
+
+    private void callBack() {
+        int len = callbackList.beginBroadcast();
+        for (int i = 0; i < len; i++) {
+            try {
+                Log.e(TAG, "callBack: " + callbackList.getBroadcastItem(i).toString());
+                callbackList.getBroadcastItem(i).onFinish();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void onCreate() {
