@@ -34,7 +34,7 @@ public class AIDLService extends Service {
         public void addStudent(Student student) throws RemoteException {
             Log.d(TAG, "addStudent: " + student.toString());
             studentList.add(student);
-
+            callBack();
         }
 
         @Override
@@ -42,7 +42,6 @@ public class AIDLService extends Service {
             Log.d(TAG, "getStudent: " + name);
             for (Student student : studentList) {
                 if (student.getName().equals(name)) {
-                    callBack();
                     return student;
                 }
             }
