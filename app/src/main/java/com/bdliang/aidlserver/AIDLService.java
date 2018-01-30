@@ -13,7 +13,7 @@ import java.util.List;
 public class AIDLService extends Service {
     private RemoteCallbackList<ICallback> callbackList = new RemoteCallbackList<>();
     /**
-     *
+     * TAG
      */
     public static final String TAG = "AIDLService";
 
