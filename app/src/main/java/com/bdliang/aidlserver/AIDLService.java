@@ -10,6 +10,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class AIDLService extends Service {
     private RemoteCallbackList<ICallback> callbackList = new RemoteCallbackList<>();
     /**
